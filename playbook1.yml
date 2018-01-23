@@ -1,0 +1,51 @@
+---
+- hosts: web1
+  become: true
+  tasks:
+
+  - name: create a directory
+    file:
+      dest: /home/devmahesh/tomcat
+      state: directory
+
+  - name: download apache tomcat
+    get_url:
+      url: http://www-eu.apache.org/dist/tomcat/tomcat-7/v7.0.82/bin/apache-tomcat-7.0.82.tar.gz
+      dest: /home/devmahesh/tomcat
+
+  - name: Install unzip
+    apt:
+      name: unzip
+      update_cache: yes
+      state: present
+ 
+  - name: Extract the file
+    unarchive:
+      src: /home/devmahesh/tomcat/apache-tomcat-7.0.82.tar.gz
+      dest: /home/devmahesh/tomcat
+      mode: 0777
+      owner: devmahesh
+      remote_src: yes
+
+  - name: Edit the tomcat file
+    lineinfile:
+      dest: /home/devmahesh/tomcat/apache-tomcat-7.0.82/conf/tomcat-users.xml
+      regexp: <!--
+                <role rolename="tomcat"/>
+                <role rolename="role1"/>
+                <user username="tomcat" password="<must-be-changed>" roles="tomcat"/>
+                <user username="both" password="<must-be-changed>" roles="tomcat,role1"/>
+                <user username="role1" password="<must-be-changed>" roles="role1"/>
+              -->
+      state: absent
+
+  - name: Append lines
+    lineinfile:
+      dest: /home/devmahesh/tomcat/apache-tomcat-7.0.82/conf/tomcat-users.xml
+      regexp: <role rolename="manager-gui,manager-script,admin-gui,admin-script"/>  
+              <user username="tomcat" password="tomcat" roles="manager-gui,manager-script,admin-gui,admin-script"/>
+      line: <tomcat-users>
+      state: present
+
+  - name: Restart tomcat server
+    command: nohup /home/devmahesh/tomcat/apache-tomcat-7.0.82/bin/startup.sh  
