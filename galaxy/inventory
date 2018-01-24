@@ -1,0 +1,1 @@
+web1 ansible_ssh_host=35.160.8.61 ansible_ssh_user=devmahesh ansible_ssh_pass=1234

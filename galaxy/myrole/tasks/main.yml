@@ -1,0 +1,30 @@
+---
+  - name: create a directory
+    file:
+      dest: /home/devmahesh/tomcat
+      state: directory
+
+  - name: install apache webserver
+    apt:
+      name: apache2
+      update_cache: yes
+      state: latest
+
+  - name: Delete index html file
+    file:
+      dest: /var/www/html/index.html
+      state: absent
+
+  - name: create a new index html
+    file:
+      dest: /var/www/html/index.html
+      state: touch
+
+  - name: write contents to index file
+    copy:
+      content: " My page My rules "
+      dest: /var/www/html/index.html
+    notify: 
+      - Restart Apache
+  
+  
