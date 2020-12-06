@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage("Welcome"){
             steps{
-                echo "Welcome to Jenkins declarative"
+                echo "Welcome hero back to Jenkins declarative"
             }
         }
     }
