@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage("Welcome"){
             steps{
-                echo "Welcome back to Jenkins declarative pipeline from GIT integration"
+                echo "Welcome back to Jenkins declarative pipeline from GIT integration for multipipeline"
             }
         }
     }
